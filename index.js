@@ -54,14 +54,22 @@ function generateAccessToken(payload) {
 function checkAuthentication(req, res, next) {
     const authHeader = req.headers.authorization;
     const accessToken = authHeader && authHeader.split(" ")[1];
-    if (accessToken === null) {
-        res.sendStatus(401); 
+    if (accessToken === null || accessToken === undefined) {
+        // res.sendStatus(401);
+        req.user = {
+            authenticated: false
+        };
+        next();
         return;
     }
   
     jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (err, payload) => {
       if (err) {
-        res.sendStatus(401); 
+        // res.sendStatus(401);
+        req.user = {
+            authenticated: false
+        };
+        next();
         return;
       }
       req.user = payload;
@@ -133,6 +141,9 @@ app.post('/login', async (req, res) => {
 });
 
 app.get('/catalogue', checkAuthentication, async (req, res) => {
+    console.log('**********************');
+    console.log('req', req.user);
+    console.log('**********************');
     let query = {
         visible_public: 1,
         visible_authenticated: 0
