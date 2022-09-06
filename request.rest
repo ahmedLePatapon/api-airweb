@@ -12,6 +12,6 @@ Content-Type: application/json
 
 {
   "email": "samantha@airweb.fr",
-  "password": "1234"
+  "password": "3bonjour"
 }
 ####
