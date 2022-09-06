@@ -133,20 +133,16 @@ app.post('/login', async (req, res) => {
 
 app.get('/catalogue', authenticateToken, async (req, res) => {
     let query = {
-        visible_authenticated: 1
+        visible_public: 1,
+        visible_authenticated: 0
     };
-    if (!req.authenticated) {
+    if (req.authenticated) {
         query = {
-            visible_public: 1,
-            visible_authenticated: 0
+            visible_public: 0,
+            visible_authenticated: 1
         };
     }
     const products = await DB('products').where(query);
-    res.status(200).json({status: 'OK', products});
-});
-
-app.get('/catalogue/all', async (req, res) => {
-    const products = await DB('products').select();
     res.status(200).json({status: 'OK', products});
 });
 
