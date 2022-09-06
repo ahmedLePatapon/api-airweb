@@ -24,8 +24,27 @@ DB.schema.hasTable('basket').then(function(exists) {
 
 const app = express();
 
+app.use(
+    express.urlencoded({
+      extended: true,
+    })
+);
+
+app.use(express.json());
+
 app.get('/', async (req, res) => {
     res.status(200).send('API AIRWEB');
+});
+
+app.post('/login', async (req, res) => {
+    const { body } = req;
+
+    if (!body.email) {
+        res.status(200).send({status: 'KO'});
+        return;
+    }
+    let user = await DB('users').where("email", body.email);
+    res.status(200).send({status: 'OK', user});
 });
 
 app.get('/catalogue', async (req, res) => {

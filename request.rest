@@ -6,3 +6,12 @@ GET http://localhost:8080/catalogue
 
 GET http://localhost:8080/panier
 ####
+
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "email": "samantha@airweb.fr",
+  "password": "1234"
+}
+####
