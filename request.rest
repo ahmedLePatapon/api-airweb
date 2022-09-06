@@ -2,10 +2,11 @@ GET http://localhost:8080
 ###
 
 GET http://localhost:8080/catalogue
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IlNhbWFudGhhIiwiZW1haWwiOiJzYW1hbnRoYUBhaXJ3ZWIuZnIiLCJhdXRoZW50aWNhdGVkIjp0cnVlLCJpYXQiOjE2NjI0OTIzMzgsImV4cCI6MTY2MjQ5MjM1M30.QMeCFhgcJt9JK6D6MW47w134FytvHRzQNS6MCYRcWJE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IlNhbWFudGhhIiwiZW1haWwiOiJzYW1hbnRoYUBhaXJ3ZWIuZnIiLCJhdXRoZW50aWNhdGVkIjp0cnVlLCJpYXQiOjE2NjI0OTMxNzAsImV4cCI6MTY2MjQ5MzE4NX0.TlW8AhRyc8hq3mP3bWoBCyZZpvisb2HYY8mo3l9Ph34
 ####
 
 GET http://localhost:8080/panier
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IlNhbWFudGhhIiwiZW1haWwiOiJzYW1hbnRoYUBhaXJ3ZWIuZnIiLCJhdXRoZW50aWNhdGVkIjp0cnVlLCJpYXQiOjE2NjI0OTQ3NzksImV4cCI6MTY2MjQ5NTY3OX0.ALnsxARxSuGmFiaKMRGhTI0HKZV8ev1FjiQdY8Oe1pE
 ####
 
 POST http://localhost:8080/login
@@ -16,3 +17,12 @@ Content-Type: application/json
   "password": "3bonjour"
 }
 ####
+
+PUT http://localhost:8080/panier
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IlNhbWFudGhhIiwiZW1haWwiOiJzYW1hbnRoYUBhaXJ3ZWIuZnIiLCJhdXRoZW50aWNhdGVkIjp0cnVlLCJpYXQiOjE2NjI0OTUwNTksImV4cCI6MTY2MjQ5NTk1OX0.mO49SBJCBdi2zUrcg7U5nQu1iQNLzq7zH3SfBD9b6ek
+Content-Type: application/json
+
+{
+  "productId": 4,
+  "quantity": 0
+}

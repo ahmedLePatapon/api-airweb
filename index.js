@@ -48,22 +48,23 @@ function verifyPwd(password, encryptedPassword) {
 }
 
 function generateAccessToken(payload) {
-    return jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '15s' });
+    return jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
 }
 
-function authenticateToken(req, res, next) {
+function checkAuthentication(req, res, next) {
     const authHeader = req.headers.authorization;
     const accessToken = authHeader && authHeader.split(" ")[1];
     if (accessToken === null) {
-      req.authenticated = false;
+        res.sendStatus(401); 
+        return;
     }
   
-    jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (err, user) => {
+    jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (err, payload) => {
       if (err) {
-        req.authenticated = false;
-      } else {
-        req.authenticated = true;
+        res.sendStatus(401); 
+        return;
       }
+      req.user = payload;
       next();
     });
 }
@@ -82,6 +83,7 @@ DB.schema.hasTable('basket').then(function(exists) {
             table.increments('id').primary();
             table.string('user_id', 100);
             table.integer('product_id', 10);
+            table.integer('quantity', 100);
             table.timestamps();
         });
     }
@@ -103,7 +105,6 @@ app.get('/', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     const { body } = req;
-
     if (!body.email) {
         res.status(200).send({status: 'Merci de renseigner le login'});
         return;
@@ -131,12 +132,12 @@ app.post('/login', async (req, res) => {
     res.status(200).send({status: 'OK', accessToken});
 });
 
-app.get('/catalogue', authenticateToken, async (req, res) => {
+app.get('/catalogue', checkAuthentication, async (req, res) => {
     let query = {
         visible_public: 1,
         visible_authenticated: 0
     };
-    if (req.authenticated) {
+    if (req.user.authenticated) {
         query = {
             visible_public: 0,
             visible_authenticated: 1
@@ -146,7 +147,51 @@ app.get('/catalogue', authenticateToken, async (req, res) => {
     res.status(200).json({status: 'OK', products});
 });
 
-app.get('/panier', async (req, res) => {
+app.get('/panier', checkAuthentication, async (req, res) => {
+    const { user } = req;
+    if (user) {
+        res.status(200).json({status: 'KO', panier: []});
+        return;
+    }
+    const panier = await DB('basket').where('user_id', user.id);
+    res.status(200).json({status: 'OK', panier});
+});
+
+app.put('/panier', checkAuthentication, async (req, res) => {
+    const { body, user } = req;
+    if (user && user.authenticated) {
+        let [inTable] = await DB('basket').where({
+            user_id: user.id,
+            product_id: body.productId,
+        });
+        if (inTable) {
+            await DB('basket').update({
+                user_id: user.id,
+                product_id: body.productId,
+                quantity: body.quantity
+            });
+        } else {
+            await DB('basket').insert({
+                user_id: user.id,
+                product_id: body.productId,
+                quantity: body.quantity || 1
+            });
+        }
+    }
+    const panier = await DB('basket').select();
+    res.status(200).json({status: 'OK', panier});
+});
+
+app.patch('/panier', checkAuthentication, async (req, res) => {
+    const { body, user } = req;
+    
+    if (user && user.authenticated) {
+        await DB('basket').insert({
+            user_id: user.id,
+            product_id: body.productId,
+            quantity: body.quantity || 1
+        });
+    }
     const panier = await DB('basket').select();
     res.status(200).json({status: 'OK', panier});
 });
