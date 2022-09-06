@@ -3,3 +3,6 @@ GET http://localhost:8080
 
 GET http://localhost:8080/catalogue
 ####
+
+GET http://localhost:8080/panier
+####
