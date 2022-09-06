@@ -137,7 +137,7 @@ app.post('/login', async (req, res) => {
         authenticated: true
     };
     let accessToken = generateAccessToken(payload);
-    res.status(200).send({status: 'OK', accessToken});
+    res.status(200).send({status: 'OK', accessToken: `Bearer ${accessToken}`});
 });
 
 app.get('/catalogue', checkAuthentication, async (req, res) => {
