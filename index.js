@@ -4,15 +4,17 @@ const {
     createDecipheriv,
     scryptSync
 } = require('node:crypto');
-
 const express = require('express');
 const knex = require('knex');
+const jwt = require('jsonwebtoken');
 
 const PORT = '8080';
 
 const SALT = 24;
 const SECRET_KEY = 'secret_key';
 const algorithm = 'aes-192-cbc';
+
+const ACCESS_TOKEN_SECRET = 'secret_Acces_Token';
 
 const key = scryptSync(SECRET_KEY, 'salt', SALT);
 const iv = Buffer.alloc(16, 0);
@@ -43,6 +45,10 @@ function verifyPwd(password, encryptedPassword) {
     } catch (error) {
         return false;
     }
+}
+
+function generateAccessToken(payload) {
+    return jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '15s' });
 }
 
 const DB = knex({
@@ -99,7 +105,13 @@ app.post('/login', async (req, res) => {
         return;
     }
     // implementation du JWT
-    res.status(200).send({status: 'OK', user});
+    delete user.password_hash;
+    let payload = {
+        ...user,
+        isAuth: true
+    };
+    let accessToken = generateAccessToken(payload);
+    res.status(200).send({status: 'OK', accessToken});
 });
 
 app.get('/catalogue', async (req, res) => {
