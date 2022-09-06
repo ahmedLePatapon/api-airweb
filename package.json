@@ -16,5 +16,13 @@
   "bugs": {
     "url": "https://github.com/ahmedLePatapon/api-airweb/issues"
   },
-  "homepage": "https://github.com/ahmedLePatapon/api-airweb#readme"
+  "homepage": "https://github.com/ahmedLePatapon/api-airweb#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  },
+  "dependencies": {
+    "express": "^4.18.1",
+    "knex": "^2.3.0",
+    "sqlite3": "^5.0.11"
+  }
 }
