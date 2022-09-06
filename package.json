@@ -24,5 +24,11 @@
     "express": "^4.18.1",
     "knex": "^2.3.0",
     "sqlite3": "^5.0.11"
+  },
+  "jshintConfig": {
+    "esversion": "11",
+    "curly": true,
+    "eqeqeq": true,
+    "nocomma": true
   }
 }
