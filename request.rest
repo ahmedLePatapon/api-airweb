@@ -2,6 +2,7 @@ GET http://localhost:8080
 ###
 
 GET http://localhost:8080/catalogue
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IlNhbWFudGhhIiwiZW1haWwiOiJzYW1hbnRoYUBhaXJ3ZWIuZnIiLCJhdXRoZW50aWNhdGVkIjp0cnVlLCJpYXQiOjE2NjI0OTIzMzgsImV4cCI6MTY2MjQ5MjM1M30.QMeCFhgcJt9JK6D6MW47w134FytvHRzQNS6MCYRcWJE
 ####
 
 GET http://localhost:8080/panier

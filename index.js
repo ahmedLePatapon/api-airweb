@@ -51,6 +51,23 @@ function generateAccessToken(payload) {
     return jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '15s' });
 }
 
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers.authorization;
+    const accessToken = authHeader && authHeader.split(" ")[1];
+    if (accessToken === null) {
+      req.authenticated = false;
+    }
+  
+    jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (err, user) => {
+      if (err) {
+        req.authenticated = false;
+      } else {
+        req.authenticated = true;
+      }
+      next();
+    });
+}
+
 const DB = knex({
     client: 'sqlite3',
     connection: {
@@ -108,13 +125,27 @@ app.post('/login', async (req, res) => {
     delete user.password_hash;
     let payload = {
         ...user,
-        isAuth: true
+        authenticated: true
     };
     let accessToken = generateAccessToken(payload);
     res.status(200).send({status: 'OK', accessToken});
 });
 
-app.get('/catalogue', async (req, res) => {
+app.get('/catalogue', authenticateToken, async (req, res) => {
+    let query = {
+        visible_authenticated: 1
+    };
+    if (!req.authenticated) {
+        query = {
+            visible_public: 1,
+            visible_authenticated: 0
+        };
+    }
+    const products = await DB('products').where(query);
+    res.status(200).json({status: 'OK', products});
+});
+
+app.get('/catalogue/all', async (req, res) => {
     const products = await DB('products').select();
     res.status(200).json({status: 'OK', products});
 });
