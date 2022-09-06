@@ -2,7 +2,7 @@ GET http://localhost:8080
 ###
 
 GET http://localhost:8080/catalogue
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IlNhbWFudGhhIiwiZW1haWwiOiJzYW1hbnRoYUBhaXJ3ZWIuZnIiLCJhdXRoZW50aWNhdGVkIjp0cnVlLCJpYXQiOjE2NjI0OTMxNzAsImV4cCI6MTY2MjQ5MzE4NX0.TlW8AhRyc8hq3mP3bWoBCyZZpvisb2HYY8mo3l9Ph34
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IlNhbWFudGhhIiwiZW1haWwiOiJzYW1hbnRoYUBhaXJ3ZWIuZnIiLCJhdXRoZW50aWNhdGVkIjp0cnVlLCJpYXQiOjE2NjI0OTY1NTgsImV4cCI6MTY2MjQ5NzQ1OH0.ExAMwK6zeuggoXbimRdBDgebMfz_KYMh-5zM4i_pkv4
 ####
 
 GET http://localhost:8080/panier
@@ -19,10 +19,10 @@ Content-Type: application/json
 ####
 
 PUT http://localhost:8080/panier
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IlNhbWFudGhhIiwiZW1haWwiOiJzYW1hbnRoYUBhaXJ3ZWIuZnIiLCJhdXRoZW50aWNhdGVkIjp0cnVlLCJpYXQiOjE2NjI0OTUwNTksImV4cCI6MTY2MjQ5NTk1OX0.mO49SBJCBdi2zUrcg7U5nQu1iQNLzq7zH3SfBD9b6ek
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IlNhbWFudGhhIiwiZW1haWwiOiJzYW1hbnRoYUBhaXJ3ZWIuZnIiLCJhdXRoZW50aWNhdGVkIjp0cnVlLCJpYXQiOjE2NjI0OTY1NTgsImV4cCI6MTY2MjQ5NzQ1OH0.ExAMwK6zeuggoXbimRdBDgebMfz_KYMh-5zM4i_pkv4
 Content-Type: application/json
 
 {
   "productId": 4,
-  "quantity": 0
+  "quantity": 1
 }
