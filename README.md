@@ -2,10 +2,10 @@
 
 ## Lancement du serveur
 
- 1 - cloner le repo https://github.com/ahmedLePatapon/api-airweb
- 2 - Ouvrir un terminal à la racine du dossier
- 3 - executer la commande _npm i_ pour installer les dependances
- 4 - executer la commande _npm run dev_ pour lancer le serveur
+ 1. cloner le repo https://github.com/ahmedLePatapon/api-airweb
+ 2. Ouvrir un terminal à la racine du dossier
+ 3. executer la commande _npm i_ pour installer les dependances
+ 4. executer la commande _npm run dev_ pour lancer le serveur
 
 ## Requetes
 
