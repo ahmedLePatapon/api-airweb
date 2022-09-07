@@ -1,15 +1,15 @@
-GET http://localhost:8080
+GET http://localhost:8080/api/v1
 ###
 
-GET http://localhost:8080/catalogue
+GET http://localhost:8080/api/v1/catalogue
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IlNhbWFudGhhIiwiZW1haWwiOiJzYW1hbnRoYUBhaXJ3ZWIuZnIiLCJhdXRoZW50aWNhdGVkIjp0cnVlLCJpYXQiOjE2NjI0OTY1NTgsImV4cCI6MTY2MjQ5NzQ1OH0.ExAMwK6zeuggoXbimRdBDgebMfz_KYMh-5zM4i_pkv4
 ####
 
-GET http://localhost:8080/panier
+GET http://localhost:8080/api/v1/panier
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IlNhbWFudGhhIiwiZW1haWwiOiJzYW1hbnRoYUBhaXJ3ZWIuZnIiLCJhdXRoZW50aWNhdGVkIjp0cnVlLCJpYXQiOjE2NjI0OTQ3NzksImV4cCI6MTY2MjQ5NTY3OX0.ALnsxARxSuGmFiaKMRGhTI0HKZV8ev1FjiQdY8Oe1pE
 ####
 
-POST http://localhost:8080/login
+POST http://localhost:8080/api/v1/login
 Content-Type: application/json
 
 {
@@ -18,7 +18,7 @@ Content-Type: application/json
 }
 ####
 
-PUT http://localhost:8080/panier
+PUT http://localhost:8080/api/v1/panier
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IlNhbWFudGhhIiwiZW1haWwiOiJzYW1hbnRoYUBhaXJ3ZWIuZnIiLCJhdXRoZW50aWNhdGVkIjp0cnVlLCJpYXQiOjE2NjI0OTY1NTgsImV4cCI6MTY2MjQ5NzQ1OH0.ExAMwK6zeuggoXbimRdBDgebMfz_KYMh-5zM4i_pkv4
 Content-Type: application/json
 
