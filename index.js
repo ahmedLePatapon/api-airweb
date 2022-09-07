@@ -1,46 +1,9 @@
-const { Buffer } = require('node:buffer');
-const {
-    createCipheriv,
-    createDecipheriv,
-    scryptSync
-} = require('node:crypto');
 const express = require('express');
 const knex = require('knex');
 
 const jwt = require('./middleware/jwt');
 const { variables } = require('./config');
-
-const key = scryptSync(variables.SECRET_KEY, 'salt', variables.SALT);
-const iv = Buffer.alloc(16, 0);
-
-// return decrypted password
-function decrypt(passwordCrypted) {
-    const decipher = createDecipheriv(variables.ALGORITHM, key, iv);
-    const encryptedText = Buffer.from(passwordCrypted, 'hex');
-    // Updating encrypted text
-    let decrypted = decipher.update(encryptedText);
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
-    return decrypted.toString('utf8');
-}
-
-// return encrypt password
-function encrypt(password) {
-    const cipher = createCipheriv(algorithm, key, iv);
-    let cipherText = cipher.update(password);
-    cipherText = Buffer.concat([cipherText, cipher.final()]);
-    return cipherText.toString('hex');
-}
-
-// compare password & encryptedPassword if password match return 'true' else 'false'
-function verifyPwd(password, encryptedPassword) {
-    try {
-        let decrypted = decrypt(encryptedPassword);
-        return decrypted === password; 
-    } catch (error) {
-        return false;
-    }
-}
-
+const utils = require('./utils');
 
 const DB = knex({
     client: 'sqlite3',
@@ -89,7 +52,7 @@ app.post('/login', async (req, res) => {
         return;
     }
 
-    let veryfiedPwd = verifyPwd(body.password, user.password_hash);
+    let veryfiedPwd = utils.verifyPwd(body.password, user.password_hash);
     if (!veryfiedPwd) {
         // isNotAuth
         res.status(200).send({status: 'login ou mot de passe incorrect'});
