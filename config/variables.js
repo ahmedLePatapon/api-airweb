@@ -7,7 +7,7 @@ const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || 'secret_Acces_Tok
 const TTL_SESSION = process.env.TTL_SESSION * 1 || 60000 ;
 const SALT = process.env.SALT * 1 || 24;
 const EXPIREIN = process.env.EXPIREIN || '5m';
-const SECRET_KEY = '';
+const SECRET_KEY = process.env.SECRET_KEY || 'cle_secrete';
 const ALGORITHM = process.env.ALGORITHM || 'aes-192-cbc';
 
 module.exports = {
