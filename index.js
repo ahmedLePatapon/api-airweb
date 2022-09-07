@@ -6,22 +6,16 @@ const {
 } = require('node:crypto');
 const express = require('express');
 const knex = require('knex');
-const jwt = require('jsonwebtoken');
 
-const PORT = '8080';
+const jwt = require('./middleware/jwt');
+const { variables } = require('./config');
 
-const SALT = 24;
-const SECRET_KEY = 'secret_key';
-const algorithm = 'aes-192-cbc';
-
-const ACCESS_TOKEN_SECRET = 'secret_Acces_Token';
-
-const key = scryptSync(SECRET_KEY, 'salt', SALT);
+const key = scryptSync(variables.SECRET_KEY, 'salt', variables.SALT);
 const iv = Buffer.alloc(16, 0);
 
 // return decrypted password
 function decrypt(passwordCrypted) {
-    const decipher = createDecipheriv(algorithm, key, iv);
+    const decipher = createDecipheriv(variables.ALGORITHM, key, iv);
     const encryptedText = Buffer.from(passwordCrypted, 'hex');
     // Updating encrypted text
     let decrypted = decipher.update(encryptedText);
@@ -47,35 +41,6 @@ function verifyPwd(password, encryptedPassword) {
     }
 }
 
-function generateAccessToken(payload) {
-    return jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
-}
-
-function checkAuthentication(req, res, next) {
-    const authHeader = req.headers.authorization;
-    const accessToken = authHeader && authHeader.split(" ")[1];
-    if (accessToken === null || accessToken === undefined) {
-        // res.sendStatus(401);
-        req.user = {
-            authenticated: false
-        };
-        next();
-        return;
-    }
-  
-    jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (err, payload) => {
-      if (err) {
-        // res.sendStatus(401);
-        req.user = {
-            authenticated: false
-        };
-        next();
-        return;
-      }
-      req.user = payload;
-      next();
-    });
-}
 
 const DB = knex({
     client: 'sqlite3',
@@ -136,14 +101,11 @@ app.post('/login', async (req, res) => {
         ...user,
         authenticated: true
     };
-    let accessToken = generateAccessToken(payload);
+    let accessToken = jwt.generateAccessToken(payload);
     res.status(200).send({status: 'OK', accessToken: `Bearer ${accessToken}`});
 });
 
-app.get('/catalogue', checkAuthentication, async (req, res) => {
-    console.log('**********************');
-    console.log('req', req.user);
-    console.log('**********************');
+app.get('/catalogue', jwt.checkAuthentication, async (req, res) => {
     let query = {
         visible_public: 1,
         visible_authenticated: 0
@@ -158,7 +120,7 @@ app.get('/catalogue', checkAuthentication, async (req, res) => {
     res.status(200).json({status: 'OK', products});
 });
 
-app.get('/panier', checkAuthentication, async (req, res) => {
+app.get('/panier', jwt.checkAuthentication, async (req, res) => {
     const { user } = req;
     if (user) {
         res.status(200).json({status: 'KO', panier: []});
@@ -168,7 +130,7 @@ app.get('/panier', checkAuthentication, async (req, res) => {
     res.status(200).json({status: 'OK', panier});
 });
 
-app.put('/panier', checkAuthentication, async (req, res) => {
+app.put('/panier', jwt.checkAuthentication, async (req, res) => {
     const { body, user } = req;
     if (user && user.authenticated) {
         let [inTable] = await DB('basket').where({
@@ -193,7 +155,7 @@ app.put('/panier', checkAuthentication, async (req, res) => {
     res.status(200).json({status: 'OK', panier});
 });
 
-app.patch('/panier', checkAuthentication, async (req, res) => {
+app.patch('/panier', jwt.checkAuthentication, async (req, res) => {
     const { body, user } = req;
     
     if (user && user.authenticated) {
@@ -207,6 +169,6 @@ app.patch('/panier', checkAuthentication, async (req, res) => {
     res.status(200).json({status: 'OK', panier});
 });
 
-app.listen(PORT, () => {
-    console.log(`API is listening on http://localhost:${PORT}`);
+app.listen(variables.PORT, () => {
+    console.log(`API is listening on http://localhost:${variables.PORT}`);
 });
